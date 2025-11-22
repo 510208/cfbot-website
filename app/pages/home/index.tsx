@@ -1,11 +1,13 @@
-import Description from "@/routes/description";
-import HeroSection from "@/routes/hero-section";
+import Description from "@/pages/home/description";
+import HeroSection from "@/pages/home/hero-section";
+import Features from "./feature";
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
       <Description />
+      <Features />
     </>
   );
 }
