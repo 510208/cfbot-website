@@ -18,18 +18,34 @@ jobs:
   build:
     # 這個 job 會執行在作業系統為 ubuntu 的 runner
     runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}  # 設定 job 層級的環境變數
 
-    # 作為 Job 的一部分，Steps 會循序執行一連串的動作
     steps:
-      # 在 $GITHUB_WORKSPACE 下簽出您的存儲庫，以便您的工作可以訪問它
-      - uses: actions/checkout@v2
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      # 在 Runner 上使用 shell 顯示出 Hello world
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.3.0
 
-      # 執行一組的指令
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Add .nojekyll file
+        run: echo > build/client/.nojekyll
+
+#       - name: Copy 404.html
+#         run: cp build/client/index.html build/client/404.html
+
+      - name: Upload production-ready build files
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-files
+          path: ./build/client
