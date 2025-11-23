@@ -9,6 +9,7 @@ import {
 import { RootProvider } from "fumadocs-ui/provider/react-router";
 import type { Route } from "./+types/root";
 import "./app.css";
+import SearchDialog from "./components/search";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -26,6 +27,7 @@ export const links: Route.LinksFunction = () => [
     href: "/fonts/loader.css",
   },
 ];
+import { ReactLenis } from "lenis/react";
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -37,7 +39,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body className="flex flex-col min-h-screen">
-        <RootProvider>{children}</RootProvider>
+        <ReactLenis root />
+        <RootProvider
+          theme={{
+            // enabled: false,
+            attribute: "class", // 配合 Tailwind CSS 或其他 CSS 選擇器
+            enableSystem: false, // 停用系統設定
+            defaultTheme: "dark", // 強制預設為深色
+            storageKey: "theme", // 儲存主題的 key
+          }}
+          search={{
+            SearchDialog,
+          }}
+        >
+          {children}
+        </RootProvider>
         <ScrollRestoration />
         <Scripts />
       </body>
