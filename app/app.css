@@ -173,3 +173,7 @@
 .hover-eff {
   @apply hover:-translate-y-2 transition-transform duration-300;
 }
+
+.description-content {
+  @apply text-left font-extralight text-4xl leading-relaxed;
+}
