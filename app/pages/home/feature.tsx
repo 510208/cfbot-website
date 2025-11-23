@@ -1,36 +1,56 @@
+import { HighlightedText } from "components/home-animate";
 import { motion } from "motion/react";
 
-function FeatureCard({
-  title,
-  description,
-  vectorImg,
-}: {
+interface FeatureCardProps {
   title: string;
   description: string;
   vectorImg: string;
-}) {
+  animationDelay: number;
+}
+
+export function FeatureCard({
+  title,
+  description,
+  vectorImg,
+  animationDelay,
+  ...props
+}: FeatureCardProps) {
   return (
+    // 進場動畫
     <motion.div
-      className="relative border bg-fd-secondary/20 p-0 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 h-[300px] max-h-[300px] flex flex-col justify-end hover-eff overflow-hidden"
-      initial="initial"
-      whileHover="hover"
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, margin: "-100px" }}
+      transition={{
+        duration: 0.6,
+        ease: "easeOut",
+        delay: animationDelay ?? 0,
+      }}
     >
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.img
-          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-3/4"
-          src={vectorImg}
-          alt={title}
-          variants={{
-            initial: { y: 0, opacity: 0.1 },
-            hover: { y: -180, opacity: 0.8 },
-          }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        />
-      </div>
-      <div className="relative px-6 py-10 bg-linear-to-b from-transparent to-fd-secondary/50">
-        <h3 className="text-2xl font-semibold mb-4">{title}</h3>
-        <p className="text-fd-muted-foreground">{description}</p>
-      </div>
+      {/* Hover 動畫內容 */}
+      <motion.div
+        className="relative border bg-fd-secondary/20 p-0 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 h-[300px] max-h-[300px] flex flex-col justify-end hover-eff overflow-hidden"
+        initial="initial"
+        whileHover="hover"
+        {...props}
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.img
+            className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-3/4"
+            src={vectorImg}
+            alt={title}
+            variants={{
+              initial: { y: 0, opacity: 0.1 },
+              hover: { y: -180, opacity: 0.8 },
+            }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          />
+        </div>
+        <div className="relative px-6 py-10 bg-linear-to-b from-transparent to-fd-secondary/50">
+          <h3 className="text-2xl font-semibold mb-4">{title}</h3>
+          <p className="text-fd-muted-foreground">{description}</p>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
@@ -78,14 +98,52 @@ export default function Features() {
     <div id="features" className="container mx-auto px-4 py-16">
       {/* 功能網格 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map((feature) => (
+        {features.map((feature, index) => (
           <FeatureCard
             key={feature.title}
             title={feature.title}
             description={feature.description}
             vectorImg={feature.vectorImg}
+            animationDelay={index * 0.15}
           />
         ))}
+      </div>
+      <div className="flex gap-0">
+        <div className="w-2/3">
+          <motion.p
+            className="description-content mt-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: false }}
+          >
+            <HighlightedText>你的群組，由你管理！</HighlightedText>
+            使用
+            CFBot，輕鬆掌控伺服器，提升管理效率。為了你的社群打造最強大的管理工具，重新想像每位成員的體驗！
+          </motion.p>
+        </div>
+        <div className="w-1/3">
+          <motion.p
+            className="ml-6 pl-6 mt-6 border-l border-fd-border text-white/70"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
+            viewport={{ once: false }}
+          >
+            這些功能不夠使用怎麼辦？別擔心，CFBot 採用 discord.py 原生 Cogs
+            系統載入外掛，你能夠根據需求安裝更多功能，打造專屬於你的完美機器人。越多人使用，就有越多功能！
+          </motion.p>
+          <motion.p
+            className="ml-6 pl-6 mt-6 border-l border-fd-border text-white/70"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+            viewport={{ once: false }}
+          >
+            CFBot
+            持續更新中，未來將加入更多強大功能，如自訂指令、進階管理工具、音樂功能等，敬請期待！
+          </motion.p>
+        </div>
       </div>
     </div>
   );

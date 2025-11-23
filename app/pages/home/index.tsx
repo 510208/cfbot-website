@@ -1,6 +1,7 @@
 import Description from "@/pages/home/description";
 import HeroSection from "@/pages/home/hero-section";
 import Features from "./feature";
+import OpenSourceDescription from "./open-source";
 
 export default function HomePage() {
   return (
@@ -8,6 +9,7 @@ export default function HomePage() {
       <HeroSection />
       <Description />
       <Features />
+      <OpenSourceDescription />
     </>
   );
 }

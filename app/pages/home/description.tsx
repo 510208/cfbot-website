@@ -6,7 +6,7 @@ export default function Description() {
     <div id="descriptions" className="container mx-auto px-4 py-32">
       <div>
         <motion.p
-          className="text-left font-extralight text-4xl leading-relaxed"
+          className="description-content"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: false, amount: 0.5 }}
